@@ -11,8 +11,9 @@ export default function RootLayout() {
         headerTitleAlign: 'center',
         headerTitleStyle: {
           fontSize: 30,
+          color: '#fff',
           fontWeight: 'bold'
-        }
+        },
         }}/>
     </Stack>
   );
@@ -20,7 +21,7 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#c9c9c9',
-    height: 100
+    backgroundColor: '#3F8EFC',
+    height: 100,
   },
 });

@@ -1,15 +1,26 @@
 import { StyleSheet, View, Text, Image } from 'react-native';
-import { Link } from 'expo-router';
+import { Link,Stack } from 'expo-router';
 
 export default function Categories() {
   return (
+    
+    
     <View style={{
         flex: 1,
         flexDirection: "column"
     }}>
-        <View style={styles.header}>
-            <Text style={styles.title}>Kotoba</Text>
-        </View>
+      <Stack.Screen name="categories" options={{
+              title: 'Categorias',
+              headerStyle: styles.header,
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                color: "#fff",
+                fontSize: 30,
+                fontWeight: 'bold',
+              },
+              headerBackVisible: true,
+              }}/>
+        
         <View
             style={[
             styles.container,
@@ -28,21 +39,23 @@ export default function Categories() {
                         }}>Lugares</Link>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Image source={require('@/assets/images/lugares.jpeg')} resizeMode='cover' style={{}} />
+                    <Image source={require('@/assets/images/lugares.jpeg')} resizeMode='cover' style={styles.category_image} />
                 </View>
             </View>
             
             <View style={styles.container}>
                 <View style={styles.textContainer}>
-                    <Link style={styles.text} href={{
-                        pathname: "./difficulty",
-                        params: {
-                            category: "musica"
-                        }
+                    <Link style={styles.text} 
+                        href={{
+                          pathname: "./difficulty",
+                          
+                          params: {
+                              category: "musica"
+                          }
                         }}>Música</Link>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Image source={require('@/assets/images/musica.jpeg')} resizeMode='cover' style={{}} />
+                    <Image source={require('@/assets/images/musica.jpeg')} resizeMode='cover' style={styles.category_image} />
                 </View>
             </View>
             
@@ -56,7 +69,7 @@ export default function Categories() {
                         }}>Comida</Link>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Image source={require('@/assets/images/comida.jpeg')} resizeMode='cover' style={{}} />
+                    <Image source={require('@/assets/images/comida.jpeg')} resizeMode='cover' style={styles.category_image} />
                 </View>
             </View>
             
@@ -70,7 +83,7 @@ export default function Categories() {
                         }}>Palabras simples</Link>
                 </View>
                 <View style={styles.imageContainer}>
-                    <Image source={require('@/assets/images/palabras-simples.jpeg')} resizeMode='cover' />
+                    <Image source={require('@/assets/images/palabras-simples.jpeg')} resizeMode='cover' style={styles.category_image} />
                 </View>
             </View>
         </View>
@@ -96,7 +109,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 30,
     fontWeight: "500",
-    textAlign: "center"
+    textAlign: "center",
+    
   },
   category: {
     flex: 1,
@@ -140,5 +154,9 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%"
+  },
+  category_image: {
+    height: "100%",
+    width: "100%",
   }
 });
