@@ -1,138 +1,64 @@
-import { StyleSheet, View } from 'react-native';
-import { Link } from "expo-router"
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import React from "react";
 
 export default function Difficulty() {
+  const router = useRouter();
+
+  const handlePress = (difficulty: string) => {
+    router.push({
+      pathname: "/selection/game",
+      params: {
+        difficulty: difficulty
+      }
+    });
+  };
     return(
-        <View style={{
-                flex: 1,
-                flexDirection: "column",
-            }}>
-                <View
-                    style={[
-                    styles.container,
-                    {
-                        flexDirection: 'column',
-                        alignItems: "center"
-                    },
-                    ]}>
-                    <View style={styles.container}>
-                        <View style={styles.textContainer}>
-                            <Link style={styles.text} href={{
-                                pathname: "./difficulty",
-                                params: {
-                                    category: "lugares"
-                                }
-                                }}>3 letras</Link>
-                        </View>
-                        
-                    </View>
-                    
-                    <View style={styles.container}>
-                        <View style={styles.textContainer}>
-                            <Link style={styles.text} href={{
-                                pathname: "./difficulty",
-                                params: {
-                                    category: "musica"
-                                }
-                                }}>4 letras</Link>
-                        </View>
-                        
-                    </View>
-                    
-                    <View style={styles.container}>
-                        <View style={styles.textContainer}>
-                            <Link style={styles.text} href={{
-                                pathname: "./difficulty",
-                                params: {
-                                    category: "comida"
-                                }
-                                }}>5 letras</Link>
-                        </View>
-                        
-                    </View>
-                    
-                    <View style={styles.container}>
-                        <View style={styles.textContainer}>
-                            <Link style={styles.text} href={{
-                                pathname: "./game",
-                                params: {
-                                    category: "palabras simples"
-                                }
-                                }}>6 letras</Link>
-                        </View>
-                        
-                    </View>
-                </View>
-            </View>
+        <View style={styles.container}>
+            <TouchableOpacity style={styles.difficultyButton} onPress={() => handlePress('3')}>
+                <Text style={styles.text}>3 letras</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.difficultyButton} onPress={() => handlePress('4')}>
+                <Text style={styles.text}>4 letras</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.difficultyButton} onPress={() => handlePress('5')}>
+                <Text style={styles.text}>5 letras</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.difficultyButton} onPress={() => handlePress('6')}>
+                <Text style={styles.text}>6 letras</Text>
+            </TouchableOpacity>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#3F8EFC',
-    height: 90,
-    paddingVertical: 15,
-    borderBottomRightRadius: 10,
-    borderBottomLeftRadius: 10
-  },
-  title: {
-    color: "#fff",
-    fontSize: 40,
-    fontWeight: "bold",
-    textAlign: "center"
-  },
   text: {
     color: "#fff",
     fontSize: 30,
     fontWeight: "500",
     textAlign: "center"
   },
-  category: {
-    flex: 1,
-    flexDirection: "row",
-    height: 100
-  },
-  categoryGradient: {
-    backgroundColor: "blue",
-    shadowColor: "blue",
-    shadowOffset: {width: 100, height: 0},
-    height: 100
-  },
   container: {
     flex: 1,
-    flexDirection: "row",
     margin: 15,
-    maxHeight:500
+    flexDirection: 'column',
+    alignContent: 'center',
+    justifyContent: 'center'
   },
-  textContainer: {
-    flex: 1,
+  difficultyButton: {
     backgroundColor: '#3F8EFC',
     shadowColor: '#007bff',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 5,
-    alignItems: "center",
     justifyContent: "center",
-    borderRadius:8,
+    borderRadius: 8,
+    marginVertical: 20,
+    marginHorizontal: 60,
+    paddingVertical: 30
   },
-  imageContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-    shadowColor: '#ffffff',
-    shadowOffset: { width: 0, height: -10 },
-    shadowOpacity: 0.3,
-    shadowRadius: 10,
-    elevation: 5,
-    borderBottomRightRadius: 10,
-    borderTopRightRadius: 10
-  },
-  image: {
-    width: "100%"
-  },
-  category_image: {
-    height: "100%",
-    width: "100%",
-  }
 });
