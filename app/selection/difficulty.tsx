@@ -1,23 +1,13 @@
-import { StyleSheet, View, Text, Image } from 'react-native';
-import { Stack,Link } from "expo-router"
+import { StyleSheet, View } from 'react-native';
+import { Link } from "expo-router"
+import React from "react";
+
 export default function Difficulty() {
     return(
         <View style={{
                 flex: 1,
                 flexDirection: "column",
             }}>
-              <Stack.Screen name="dificult" options={{
-                      title: 'Dificultad',
-                      headerStyle: styles.header,
-                      headerTitleAlign: 'center',
-                      headerTitleStyle: {
-                        color: "#fff",
-                        fontSize: 30,
-                        fontWeight: 'bold',
-                      },
-                      headerBackVisible: true,
-                      }}/>
-                
                 <View
                     style={[
                     styles.container,

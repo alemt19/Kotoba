@@ -1,5 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native';
 import Letter from '@/components/letter';
+import React from "react";
 
 export default function howToPlay() {
   return (

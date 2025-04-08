@@ -1,4 +1,5 @@
-import { View, Text,StyleSheet } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
+import React from "react";
 
 // Este componente es temporal, alguien debe modificarlo para implementar la lógica
 // del teclado, la selección y eso

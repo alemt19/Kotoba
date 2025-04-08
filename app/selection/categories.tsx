@@ -1,26 +1,24 @@
-import { StyleSheet, View, Text, Image } from 'react-native';
-import { Link,Stack } from 'expo-router';
+import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
+import { useRouter } from 'expo-router';
+import React from "react";
 
 export default function Categories() {
+  const router = useRouter();
+
+  const handlePress = (category: string) => {
+    router.push({
+      pathname: "/selection/difficulty",
+      params: {
+        category: category
+      }
+    });
+  };
+
   return (
-    
-    
     <View style={{
         flex: 1,
         flexDirection: "column"
     }}>
-      <Stack.Screen name="categories" options={{
-              title: 'Categorias',
-              headerStyle: styles.header,
-              headerTitleAlign: 'center',
-              headerTitleStyle: {
-                color: "#fff",
-                fontSize: 30,
-                fontWeight: 'bold',
-              },
-              headerBackVisible: true,
-              }}/>
-        
         <View
             style={[
             styles.container,
@@ -29,63 +27,41 @@ export default function Categories() {
                 alignItems: "center"
             },
             ]}>
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={() => handlePress('lugares')}>
                 <View style={styles.textContainer}>
-                    <Link style={styles.text} href={{
-                        pathname: "./difficulty",
-                        params: {
-                            category: "lugares"
-                        }
-                        }}>Lugares</Link>
+                    <Text style={styles.text}>Lugares</Text>
                 </View>
                 <View style={styles.imageContainer}>
                     <Image source={require('@/assets/images/lugares.jpeg')} resizeMode='cover' style={styles.category_image} />
                 </View>
-            </View>
-            
-            <View style={styles.container}>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.container} onPress={() => handlePress('musica')}>
                 <View style={styles.textContainer}>
-                    <Link style={styles.text} 
-                        href={{
-                          pathname: "./difficulty",
-                          
-                          params: {
-                              category: "musica"
-                          }
-                        }}>Música</Link>
+                    <Text style={styles.text}>Música</Text>
                 </View>
                 <View style={styles.imageContainer}>
                     <Image source={require('@/assets/images/musica.jpeg')} resizeMode='cover' style={styles.category_image} />
                 </View>
-            </View>
+            </TouchableOpacity>
             
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={() => handlePress('comida')}>
                 <View style={styles.textContainer}>
-                    <Link style={styles.text} href={{
-                        pathname: "./difficulty",
-                        params: {
-                            category: "comida"
-                        }
-                        }}>Comida</Link>
+                    <Text style={styles.text}>Comida</Text>
                 </View>
                 <View style={styles.imageContainer}>
                     <Image source={require('@/assets/images/comida.jpeg')} resizeMode='cover' style={styles.category_image} />
                 </View>
-            </View>
+            </TouchableOpacity>
             
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={() => handlePress('palabras-simples')}>
                 <View style={styles.textContainer}>
-                    <Link style={styles.text} href={{
-                        pathname: "./difficulty",
-                        params: {
-                            category: "palabras simples"
-                        }
-                        }}>Palabras simples</Link>
+                    <Text style={styles.text}>Palabras simples</Text>
                 </View>
                 <View style={styles.imageContainer}>
                     <Image source={require('@/assets/images/palabras-simples.jpeg')} resizeMode='cover' style={styles.category_image} />
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     </View>
   );
