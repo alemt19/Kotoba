@@ -1,0 +1,26 @@
+{
+    "3": {
+      "palabras-simples": ["inu", "hon", "aoi", "aka"],
+      "comida": ["ayu"],
+      "musica": ["uta", "oto", "fue"],
+      "lugares": ["umi"]
+    },
+    "4": {
+      "palabras-simples": ["kaze", "hana", "yume", "kumo", "tori"],
+      "comida": ["ramen", "soba", "tofu", "maki", "dango"],
+      "musica": ["enka", "jazu", "popu", "rokk"],
+      "lugares": ["fuji", "niwa", "kawa"]
+    },
+    "5": {
+      "palabras-simples": ["ashita", "kinou", "ohayo", "issho", "genki"],
+      "comida": ["gyoza"],
+      "musica": ["ensou"],
+      "lugares": ["osaka", "sendai"]
+    },
+    "6": {
+      "palabras-simples": ["hitori"],
+      "comida": [],
+      "musica": ["kaguya", "sakura", "tsukiyo", "momiji", "hibari"],
+      "lugares": []
+    }
+  }

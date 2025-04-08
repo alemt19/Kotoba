@@ -1,15 +1,17 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import React from "react";
 
 export default function Difficulty() {
   const router = useRouter();
+  const { category } = useLocalSearchParams();
 
   const handlePress = (difficulty: string) => {
     router.push({
       pathname: "/selection/game",
       params: {
-        difficulty: difficulty
+        difficulty: difficulty,
+        category: category
       }
     });
   };

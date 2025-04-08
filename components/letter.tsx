@@ -27,7 +27,7 @@ export default function Letter({ letter, state }: LetterProps) {
         gray: styles.gray,
         empty: styles.empty,
     }
-    return(
+    return (
         <View style={stateStyles[state]}>
             <Text style={styles.letter}>{letter || (state === 'empty' ? '' : '')}</Text>
         </View>
