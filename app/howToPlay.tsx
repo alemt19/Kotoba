@@ -22,11 +22,11 @@ export default function howToPlay() {
         La letra O esta en la palabra pero en la posicion incorrecta.
       </Text>
       <View style={styles.letterContainer}>
-        <Letter state='gray' letter='L'/>
-        <Letter state='gray' letter='U'/>
-        <Letter state='gray' letter='E'/>
-        <Letter state='gray' letter='G'/>
-        <Letter state='green' letter='O'/>
+        <Letter state='absent' letter='L'/>
+        <Letter state='absent' letter='U'/>
+        <Letter state='absent' letter='E'/>
+        <Letter state='absent' letter='G'/>
+        <Letter state='correct' letter='O'/>
       </View>
 
       <Text style={styles.text}>
@@ -37,11 +37,11 @@ export default function howToPlay() {
         están en la palabra y en la posicion correcta.
       </Text>
       <View style={styles.letterContainer}>
-        <Letter state='green' letter='C'/>
-        <Letter state='green' letter='A'/>
-        <Letter state='yellow' letter='N'/>
-        <Letter state='green' letter='O'/>
-        <Letter state='gray' letter='A'/>
+        <Letter state='correct' letter='C'/>
+        <Letter state='correct' letter='A'/>
+        <Letter state='present' letter='N'/>
+        <Letter state='correct' letter='O'/>
+        <Letter state='absent' letter='A'/>
       </View>
 
       <Text style={styles.text}>
@@ -52,11 +52,11 @@ export default function howToPlay() {
         estan en la palabra
       </Text>
       <View style={styles.letterContainer}>
-        <Letter state='gray' letter='J'/>
-        <Letter state='yellow' letter='O'/>
-        <Letter state='gray' letter='T'/>
-        <Letter state='yellow' letter='A'/>
-        <Letter state='gray' letter='S'/>
+        <Letter state='absent' letter='J'/>
+        <Letter state='present' letter='O'/>
+        <Letter state='absent' letter='T'/>
+        <Letter state='present' letter='A'/>
+        <Letter state='absent' letter='S'/>
       </View>
     </View>
   );
