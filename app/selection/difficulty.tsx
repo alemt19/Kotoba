@@ -1,10 +1,12 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import React from "react";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Difficulty() {
   const router = useRouter();
   const { category } = useLocalSearchParams();
+  const insets = useSafeAreaInsets();
 
   const handlePress = (difficulty: string) => {
     router.push({
@@ -16,7 +18,7 @@ export default function Difficulty() {
     });
   };
     return(
-        <View style={styles.container}>
+        <View style={[styles.container, {paddingTop : insets.top, paddingBottom : insets.bottom}]}>
             <TouchableOpacity style={styles.difficultyButton} onPress={() => handlePress('3')}>
                 <Text style={styles.text}>3 letras</Text>
             </TouchableOpacity>
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
     justifyContent: "center",
-    borderRadius: 8,
+    borderRadius: 15,
     marginVertical: 20,
     marginHorizontal: 60,
     paddingVertical: 30
