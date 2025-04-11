@@ -34,7 +34,7 @@ export default function Keyboard ({ onInputChange, onCheckPress, difficulty, wor
   const renderKey = useCallback((key: string) => (
     <TouchableOpacity
       key={key}
-      style={styles.key}
+      style={[styles.key, key === 'backspace' && styles.keyBackspace, key === 'check' && styles.keyCheck]}
       onPress={() => handleKeyPress(key)}
     >
         {key === 'backspace' ? (
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
+    backgroundColor: '#dadada',
   },
   row: {
     flexDirection: 'row',
@@ -80,13 +81,19 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   key: {
-    backgroundColor: '#dadada',
+    backgroundColor: '#fffa',
     borderRadius: 5,
     paddingVertical: 12,
     paddingHorizontal: 12,
     marginHorizontal: 2,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  keyBackspace: {
+    backgroundColor: 'hsl(355, 50%, 85%)',
+  },
+  keyCheck: {
+    backgroundColor: 'hsl(115, 50%, 85%)',
   },
   keyText: {
     fontSize: 16,
