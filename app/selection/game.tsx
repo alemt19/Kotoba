@@ -53,7 +53,7 @@ export default function Game() {
       setTypedText(typedText.slice(0, -( typedText.length - Number(wordToGuess.length))));
       console.log('Palabra recortada:', typedText.slice(0, -( typedText.length - Number(wordToGuess.length))));
     }
-    if ( currentTry < tries && !hasGuessed) {
+    if ( typedText.length >= Number(wordToGuess.length) && currentTry < tries && !hasGuessed) {
       setIsCheckPressed(true);
     } else if (typedText.length !== wordToGuess.length) {
       console.log('La palabra debe tener', wordToGuess.length, 'letras.');
