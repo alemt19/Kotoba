@@ -24,9 +24,10 @@ export default function Game() {
 
   useEffect(() => {
     if (isCheckPressed) {
+      console.log('Cantidad de letras', difficulty);
       console.log('Palabra a adivinar:', wordToGuess);
       console.log('Palabra ingresada:', typedText);
-
+      
       if (typedText.toLowerCase() === wordToGuess.toLowerCase()) {
         setHasGuessed(true);
         console.log('¡Has adivinado la palabra!');
@@ -47,7 +48,12 @@ export default function Game() {
   };
 
   const handleCheckPress = () => {
-    if (typedText.length === wordToGuess.length && currentTry < tries && !hasGuessed) {
+
+    if (typedText.length > Number(wordToGuess.length)) {
+      setTypedText(typedText.slice(0, -( typedText.length - Number(wordToGuess.length))));
+      console.log('Palabra recortada:', typedText.slice(0, -( typedText.length - Number(wordToGuess.length))));
+    }
+    if ( currentTry < tries && !hasGuessed) {
       setIsCheckPressed(true);
     } else if (typedText.length !== wordToGuess.length) {
       console.log('La palabra debe tener', wordToGuess.length, 'letras.');
@@ -80,7 +86,7 @@ export default function Game() {
           }
         </View>
 
-        <Keyboard onInputChange={handleTextChange} onCheckPress={handleCheckPress} />
+        <Keyboard onInputChange={handleTextChange} onCheckPress={handleCheckPress} difficulty={difficulty?.toString()} wordToGuess={wordToGuess} />
       </View>
     </>
   );
