@@ -22,20 +22,36 @@ export default function Word({ selected, word, inputWord, check }: WordProps) {
     );
 
     const evaluateWord = () => {
-        const newLetterStates = letterStates.map((inputLetterState, index) => {
-            const correctLetter = correctWordLetters[index];
-            const inputLetter = inputWord[index];
-            
-            if (!inputLetter) {
-                return { ...inputLetterState, state: 'empty', letter: '' };
-            } else if (correctLetter === inputLetter) {
-                return { ...inputLetterState, state: 'correct', letter: inputLetter };
-            } else if (correctWordLetters.includes(inputLetter)) {
-                return { ...inputLetterState, state: 'present', letter: inputLetter };
-            } else {
-                return { ...inputLetterState, state: 'absent', letter: inputLetter };
+        const inputWordLetters = inputWord.split('');
+        const newLetterStates: LetterState[] = letterStates.map((state) => ({ ...state })); // Clonamos el estado anterior
+    
+        // Primero, marcamos las letras correctas
+        for (let i = 0; i < correctWordLetters.length; i++) {
+            if (inputWordLetters[i] && correctWordLetters[i] === inputWordLetters[i]) {
+                newLetterStates[i].state = 'correct';
+                newLetterStates[i].letter = inputWordLetters[i];
+                correctWordLetters[i] = ''; // Para no volver a contarlas como 'present'
             }
-        }) as LetterState[];
+        }
+    
+        // Luego, marcamos las letras 'present'
+        for (let i = 0; i < inputWordLetters.length; i++) {
+            if (inputWordLetters[i] && newLetterStates[i].state !== 'correct') {
+                const indexOfPresent = correctWordLetters.indexOf(inputWordLetters[i]);
+                if (indexOfPresent !== -1) {
+                    newLetterStates[i].state = 'present';
+                    newLetterStates[i].letter = inputWordLetters[i];
+                    correctWordLetters[indexOfPresent] = ''; // Para no marcar duplicados innecesariamente
+                } else {
+                    newLetterStates[i].state = 'absent';
+                    newLetterStates[i].letter = inputWordLetters[i];
+                }
+            } else if (!inputWordLetters[i]) {
+                newLetterStates[i].state = 'empty';
+                newLetterStates[i].letter = '';
+            }
+        }
+    
         setLetterStates(newLetterStates);
         setHasBeenEvaluated(true);
     };
