@@ -1,9 +1,10 @@
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import wordsData from '@/assets/words.json'
 import Word from '@/components/word';
 import Keyboard from '@/components/keyboard';
+import Button from '@/components/button';
 
 export default function Game() {
   const tries = 5;
@@ -66,9 +67,9 @@ export default function Game() {
   return (
     <>
       <View style={styles.header}>
-        <Image style={styles.icon} source={require('@/assets/images/help.png')}/>
+        <Button type={1}></Button>
         <Text style={styles.title}>Kotoba</Text>
-        <Image style={styles.icon} source={require('@/assets/images/settings.png')}/>
+        <Button type={2}></Button>
       </View>
       <View style={styles.container}>
         <View style={styles.wordsContainer}>
