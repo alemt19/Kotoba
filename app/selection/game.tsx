@@ -31,13 +31,12 @@ export default function Game() {
         setHasGuessed(true);
         console.log('¡Has adivinado la palabra!');
       } else {
-        if (currentTry < tries - 1) {
-          setCurrentTry((prevTry) => prevTry + 1);
-          setTypedText(''); 
-        } else {
+        if (currentTry >= tries - 1) {
           console.log('¡Se acabaron los intentos! La palabra era:', wordToGuess);
         }
       }
+      setTypedText(''); 
+      setCurrentTry((prevTry) => prevTry + 1);
       setIsCheckPressed(false);
     }
   }, [isCheckPressed, typedText, wordToGuess, currentTry, tries]);
