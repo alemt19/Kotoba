@@ -7,15 +7,13 @@ interface LetterProps {
 }
 
 interface BaseStyle {
-    paddingBottom: number;
-    paddingTop: number;
-    paddingHorizontal: number;
+    padding: number;
     alignItems: "center";
     justifyContent: "center";
     marginVertical: number;
     marginHorizontal: number;
     borderRadius: number;
-    minWidth: number
+    minWidth: number;
 }
 
 export default function Letter({ letter, state }: LetterProps) {
@@ -41,15 +39,13 @@ export default function Letter({ letter, state }: LetterProps) {
 }
 
 const base: BaseStyle = {
-    paddingBottom: 30,
-    paddingTop: 5,
-    paddingHorizontal: 15,
+    padding : 10,
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 5,
     marginHorizontal: 2,
     borderRadius: 5,
-    minWidth: 50
+    minWidth: 50,
 };
 
 const styles = StyleSheet.create({

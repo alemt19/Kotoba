@@ -1,9 +1,11 @@
 import { StyleSheet, View, Image, TouchableOpacity, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import React from "react";
+import  { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export default function Categories() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const handlePress = (category: string) => {
     router.push({
@@ -15,12 +17,7 @@ export default function Categories() {
   };
 
   return (
-        <View
-            style={[
-            styles.container,
-            {
-            },
-            ]}>
+        <View style={[styles.container, {paddingTop : insets.top, paddingBottom : insets.bottom},]}>
             <TouchableOpacity style={styles.category} onPress={() => handlePress('lugares')}>
                 <View style={styles.textContainer}>
                     <Text style={styles.text}>Lugares</Text>
@@ -74,7 +71,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    margin: 15,
+    marginHorizontal: 15,
+    marginVertical : 30,
     flexDirection: 'column',
     alignItems: "center"
   },

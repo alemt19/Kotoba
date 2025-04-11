@@ -4,15 +4,24 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 interface KeyboardProps {
   onInputChange: (text: string) => void;
   onCheckPress: () => void;
+  difficulty: string;
+  wordToGuess: string;
 }
 
-export default function Keyboard ({ onInputChange, onCheckPress }: KeyboardProps) {
+export default function Keyboard ({ onInputChange, onCheckPress, difficulty, wordToGuess }: KeyboardProps) {
   const [inputText, setInputText] = useState('');
 
   const handleKeyPress = useCallback((key: string) => {
     if (key === 'backspace') {
-      setInputText(inputText.slice(0, -1));
-      onInputChange(inputText.slice(0, -1));
+      if (inputText.length > Number(difficulty)) {
+
+        setInputText(inputText.slice(0, -1-( inputText.length - Number(wordToGuess.length) )));
+        onInputChange(inputText.slice(0, -1-( inputText.length - Number(wordToGuess.length) )));
+      } else {
+        setInputText(inputText.slice(0, -1));
+        onInputChange(inputText.slice(0, -1));
+      }
+      
     } else if (key === 'check') {
       onCheckPress();
       setInputText('');
