@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, Modal, Pressable } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import wordsData from '@/assets/words.json'
 import Word from '@/components/word';
@@ -21,48 +21,68 @@ export default function Game() {
 
   const [showModal, setShowModal] = useState(false);
   const [isVictory, setIsVictory] = useState(false);
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const victorySound = useRef<Audio.Sound | null>(null);
+  const defeatSound = useRef<Audio.Sound | null>(null);
+
+  useEffect(() => {
+    const loadSounds = async () => {
+      try {
+        const { sound: victory } = await Audio.Sound.createAsync(
+          require('@/assets/sounds/victory.mp3')
+        );
+        victorySound.current = victory;
+
+        const { sound: defeat } = await Audio.Sound.createAsync(
+          require('@/assets/sounds/defeat.mp3')
+        );
+        defeatSound.current = defeat;
+      } catch (error) {
+        console.error('Error loading sounds:', error);
+      }
+    };
+
+    loadSounds();
+
+    return () => {
+      if (victorySound.current) {
+        victorySound.current.unloadAsync();
+      }
+      if (defeatSound.current) {
+        defeatSound.current.unloadAsync();
+      }
+    };
+  }, []);
 
   const playSound = async (type: 'victory' | 'defeat') => {
-    const { sound } = await Audio.Sound.createAsync(
-      type === 'victory'
-        ? require('@/assets/sounds/victory.mp3')
-        : require('@/assets/sounds/defeat.mp3')
-    );
-  
-    setSound(sound);
-  
-    // Definir rangos personalizados (en milisegundos)
-    let startMs = 0;
-    let endMs = 0;
+    const soundToPlay = type === 'victory' ? victorySound.current : defeatSound.current;
 
-    if (type === 'victory') {
-      startMs = 70000; // Desde el 1:10
-      endMs = 100000;   // Hasta el 1:40
-    } else {
-      startMs = 50000; // Desde el 0:50
-      endMs = 80000;   // Hasta el 1:20
-    }
+    if (soundToPlay) {
+      try {
+        // Definir rangos personalizados (en milisegundos)
+        let startMs = 0;
+        let endMs = 0;
 
-  
-    await sound.setPositionAsync(startMs);
-    await sound.playAsync();
-  
-    sound.setOnPlaybackStatusUpdate((status) => {
-      if (status.isLoaded && status.positionMillis >= endMs) {
-        sound.pauseAsync();
-      }
-    });
-  };
-  
-  useEffect(() => {
-    return sound
-      ? () => {
-          sound.unloadAsync(); // liberar sonido
+        if (type === 'victory') {
+          startMs = 70000; // Desde el 1:10
+          endMs = 100000;    // Hasta el 1:40
+        } else {
+          startMs = 51000; // Desde el 0:50
+          endMs = 80000;    // Hasta el 1:20
         }
-      : undefined;
-  }, [sound]);
 
+        await soundToPlay.setPositionAsync(startMs);
+        await soundToPlay.playAsync();
+
+        soundToPlay.setOnPlaybackStatusUpdate((status) => {
+          if (status.isLoaded && status.positionMillis >= endMs) {
+            soundToPlay.pauseAsync();
+          }
+        });
+      } catch (error) {
+        console.error('Error playing sound:', error);
+      }
+    }
+  };
 
   useEffect(() => {
     const words: string[] = (wordsData as any)[difficulty.toString()]?.[category.toString()] || [];
@@ -120,8 +140,8 @@ export default function Game() {
   };
 
   const restartGame = async () => {
-
-    if (sound) await sound.stopAsync();
+    if (victorySound.current) await victorySound.current.stopAsync();
+    if (defeatSound.current) await defeatSound.current.stopAsync();
 
     router.replace({
       pathname: "/selection/game",
@@ -144,8 +164,8 @@ export default function Game() {
   };
 
   const regresarHome = async () => {
-
-    if (sound) await sound.stopAsync();
+    if (victorySound.current) await victorySound.current.stopAsync();
+    if (defeatSound.current) await defeatSound.current.stopAsync();
 
     router.replace({
       pathname: "/",
