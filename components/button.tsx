@@ -17,7 +17,7 @@ export default function Button({ type }: InfoBtnProps) {
                 pathname: "/howToPlay",
               });
         } else {
-            console.log("Ajustes")
+            router.replace('/');
         }
     };
 

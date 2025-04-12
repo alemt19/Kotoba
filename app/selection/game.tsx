@@ -6,13 +6,15 @@ import Word from '@/components/word';
 import Keyboard from '@/components/keyboard';
 import Button from '@/components/button';
 import { Audio } from 'expo-av'
+import { useRouter } from 'expo-router';
+import { Home, Loader} from 'lucide-react-native'
 
 export default function Game() {
+  const router = useRouter();
   const tries = 5;
   const { category, difficulty } = useLocalSearchParams();
   const [wordToGuess, setWordToGuess] = useState('');
   const [typedText, setTypedText] = useState('');
-  //const [guesses, setGuesses] = useState<string[]>([]);
   const [currentTry, setCurrentTry] = useState(0);
   const [isCheckPressed, setIsCheckPressed] = useState(false);
   const [hasGuessed, setHasGuessed] = useState(false); 
@@ -120,6 +122,15 @@ export default function Game() {
   const restartGame = async () => {
 
     if (sound) await sound.stopAsync();
+
+    router.replace({
+      pathname: "/selection/game",
+      params: {
+        difficulty: difficulty,
+        category: category
+      }
+    });
+
     const words: string[] = (wordsData as any)[difficulty.toString()]?.[category.toString()] || [];
     if (words.length > 0) {
       const randomIndex = Math.floor(Math.random() * words.length);
@@ -128,10 +139,23 @@ export default function Game() {
   
     setShowModal(false);
     setTypedText('');
-    //setGuesses([]);
     setCurrentTry(0);
     setHasGuessed(false);
   };
+
+  const regresarHome = async () => {
+
+    if (sound) await sound.stopAsync();
+
+    router.replace({
+      pathname: "/",
+      params: {
+        difficulty: difficulty,
+        category: category
+      }
+    });
+
+  }
   
 
   return (
@@ -161,7 +185,7 @@ export default function Game() {
       
       <Modal visible={showModal} transparent={true} animationType="fade">
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)'}}>
-          <View style={{width : 300, height : 250, backgroundColor: 'white',padding: 30, borderRadius: 20,alignItems: 'center'}}>
+          <View style={{width : 300, height : 280, backgroundColor: 'white',padding: 30, borderRadius: 20,alignItems: 'center'}}>
             <Text style={{ fontSize: 35, fontWeight: 'bold', marginBottom: 20 }}>
               {isVictory ? '¡Victoria!' : '¡Derrota!'}
             </Text>
@@ -170,11 +194,20 @@ export default function Game() {
                 ? '¡Felicidades, adivinaste la palabra!'
                 : `La palabra era: ${wordToGuess}`}
             </Text>
-            <Pressable style={{backgroundColor : "#3F8EFC", width : 130, height : 50, borderRadius : 15}} onPress={restartGame} >
-              <View style={{alignItems : "center", justifyContent : 'center', height : "100%"}}>
-                <Text style={{ fontSize: 18, color : "#fff"}}>Reiniciar</Text>
-              </View>
-            </Pressable>
+            <View style={{flex : 1, flexDirection : "column", gap : 8}}>
+              <Pressable style={{backgroundColor : "#3F8EFC", width : 130, height : 50, borderRadius : 15}} onPress={restartGame} >
+                <View style={{alignItems : "center", justifyContent : 'center', width : "100%", height : "100%", flexDirection : 'row', gap : 6}}>
+                  <Loader color={"#fff"} size={16}></Loader>
+                  <Text style={{ fontSize: 18, color : "#fff"}}>Reiniciar</Text>
+                </View>
+              </Pressable>
+              <Pressable style={{backgroundColor : "#3F8EFC", width : 130, height : 50, borderRadius : 15}} onPress={regresarHome} >
+                <View style={{alignItems : "center", justifyContent : 'center', width : "100%", height : "100%",  flexDirection : 'row', gap : 6}}>
+                  <Home color={"#fff"} size={16}></Home>
+                  <Text style={{ fontSize: 18, color : "#fff"}}>Home</Text>
+                </View>
+              </Pressable>
+            </View>
           </View>
         </View>
       </Modal>
