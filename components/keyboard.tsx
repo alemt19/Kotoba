@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Vibration } from 'react-native';
 
 interface KeyboardProps {
   onInputChange: (text: string) => void;
@@ -12,6 +12,7 @@ export default function Keyboard ({ onInputChange, onCheckPress, difficulty, wor
   const [inputText, setInputText] = useState('');
 
   const handleKeyPress = useCallback((key: string) => {
+    Vibration.vibrate(25);
     if (key === 'backspace') {
       if (inputText.length > Number(difficulty)) {
 

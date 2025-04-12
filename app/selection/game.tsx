@@ -7,7 +7,7 @@ import Keyboard from '@/components/keyboard';
 import Button from '@/components/button';
 import { Audio } from 'expo-av'
 import { useRouter } from 'expo-router';
-import { Home, Loader} from 'lucide-react-native'
+import { Home, Loader } from 'lucide-react-native';
 
 export default function Game() {
   const router = useRouter();
