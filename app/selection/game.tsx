@@ -1,19 +1,66 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Modal, Pressable } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import wordsData from '@/assets/words.json'
 import Word from '@/components/word';
 import Keyboard from '@/components/keyboard';
 import Button from '@/components/button';
+import { Audio } from 'expo-av'
 
 export default function Game() {
   const tries = 5;
   const { category, difficulty } = useLocalSearchParams();
   const [wordToGuess, setWordToGuess] = useState('');
   const [typedText, setTypedText] = useState('');
+  //const [guesses, setGuesses] = useState<string[]>([]);
   const [currentTry, setCurrentTry] = useState(0);
   const [isCheckPressed, setIsCheckPressed] = useState(false);
   const [hasGuessed, setHasGuessed] = useState(false); 
+
+  const [showModal, setShowModal] = useState(false);
+  const [isVictory, setIsVictory] = useState(false);
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
+
+  const playSound = async (type: 'victory' | 'defeat') => {
+    const { sound } = await Audio.Sound.createAsync(
+      type === 'victory'
+        ? require('@/assets/sounds/victory.mp3')
+        : require('@/assets/sounds/defeat.mp3')
+    );
+  
+    setSound(sound);
+  
+    // Definir rangos personalizados (en milisegundos)
+    let startMs = 0;
+    let endMs = 0;
+
+    if (type === 'victory') {
+      startMs = 70000; // Desde el 1:10
+      endMs = 100000;   // Hasta el 1:40
+    } else {
+      startMs = 50000; // Desde el 0:50
+      endMs = 80000;   // Hasta el 1:20
+    }
+
+  
+    await sound.setPositionAsync(startMs);
+    await sound.playAsync();
+  
+    sound.setOnPlaybackStatusUpdate((status) => {
+      if (status.isLoaded && status.positionMillis >= endMs) {
+        sound.pauseAsync();
+      }
+    });
+  };
+  
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync(); // liberar sonido
+        }
+      : undefined;
+  }, [sound]);
+
 
   useEffect(() => {
     const words: string[] = (wordsData as any)[difficulty.toString()]?.[category.toString()] || [];
@@ -30,9 +77,15 @@ export default function Game() {
 
       if (typedText.toLowerCase() === wordToGuess.toLowerCase()) {
         setHasGuessed(true);
+        setIsVictory(true);
+        setShowModal(true);
+        playSound('victory');
         console.log('¡Has adivinado la palabra!');
       } else {
         if (currentTry >= tries - 1) {
+          setIsVictory(false);
+          setShowModal(true);
+          playSound('defeat');
           console.log('¡Se acabaron los intentos! La palabra era:', wordToGuess);
         }
       }
@@ -48,6 +101,7 @@ export default function Game() {
 
   const handleCheckPress = () => {
     if (typedText.length === wordToGuess.length && currentTry < tries && !hasGuessed) {
+      //setGuesses(prev => [...prev, typedText]);
       setIsCheckPressed(true);
     } else if (typedText.length !== wordToGuess.length) {
       console.log('La palabra debe tener', wordToGuess.length, 'letras.');
@@ -57,6 +111,23 @@ export default function Game() {
       console.log('Ya no tienes más intentos.');
     }
   };
+
+  const restartGame = async () => {
+
+    if (sound) await sound.stopAsync();
+    const words: string[] = (wordsData as any)[difficulty.toString()]?.[category.toString()] || [];
+    if (words.length > 0) {
+      const randomIndex = Math.floor(Math.random() * words.length);
+      setWordToGuess(words[randomIndex]);
+    }
+  
+    setShowModal(false);
+    setTypedText('');
+    //setGuesses([]);
+    setCurrentTry(0);
+    setHasGuessed(false);
+  };
+  
 
   return (
     <>
@@ -82,6 +153,26 @@ export default function Game() {
 
         <Keyboard onInputChange={handleTextChange} onCheckPress={handleCheckPress} />
       </View>
+      
+      <Modal visible={showModal} transparent={true} animationType="fade">
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <View style={{width : 300, height : 250, backgroundColor: 'white',padding: 30, borderRadius: 20,alignItems: 'center'}}>
+            <Text style={{ fontSize: 35, fontWeight: 'bold', marginBottom: 20 }}>
+              {isVictory ? '¡Victoria!' : '¡Derrota!'}
+            </Text>
+            <Text style={{ marginBottom: 20 }}>
+              {isVictory
+                ? '¡Felicidades, adivinaste la palabra!'
+                : `La palabra era: ${wordToGuess}`}
+            </Text>
+            <Pressable style={{backgroundColor : "#3F8EFC", width : 130, height : 50, borderRadius : 15}} onPress={restartGame} >
+              <View style={{alignItems : "center", justifyContent : 'center', height : "100%"}}>
+                <Text style={{ fontSize: 18, color : "#fff"}}>Reiniciar</Text>
+              </View>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
